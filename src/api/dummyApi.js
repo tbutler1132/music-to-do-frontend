@@ -56,3 +56,36 @@ export const users = [
         ]
     }
 ]
+
+export const task = [
+    {
+        id: 1,
+        content: "Make art",
+        general: true,
+    },
+    // {
+    //     id: 2,
+    //     content: "Mix beat",
+    //     general: false,
+    // }
+]
+
+export const song = [
+    {
+        id: 1,
+        title: "Color",
+        tasks: [    
+            {
+                id: 2,
+                content: "Mix beat",
+                general: false,
+            }
+        ]
+    }
+]
+
+export const user = {
+    username: "Tim",
+    password: "1234",
+    albumTitle: "Project Z"
+}

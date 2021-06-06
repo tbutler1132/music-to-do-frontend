@@ -4,6 +4,7 @@ import {useEffect} from 'react'
 import {Route, Switch} from 'react-router-dom'
 
 import Profile from './components/Profile'
+import TaskList from './components/TaskList/TaskList'
 
 import {users} from './api/dummyApi'
 import { connect } from 'react-redux';
@@ -24,7 +25,8 @@ function App(props) {
   return (
     props.currentUser ?
     <div className="App">
-      <Route path="/profile" render={() => <Profile />}/>
+      <TaskList />
+      {/* <Route path="/profile" render={() => <Profile />}/> */}
     </div>
     :
     null
