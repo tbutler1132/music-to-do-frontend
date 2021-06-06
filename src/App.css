@@ -36,3 +36,41 @@
     transform: rotate(360deg);
   }
 }
+
+
+/* Profile Page */
+
+.profile-home-page{
+  border: solid;
+  display: flex;
+  height: 100vh;
+}
+
+.album-list-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 70%;
+
+  border: solid;
+  border-color: red;
+
+  margin-top: 10%;
+  margin-left: 2%;
+}
+
+.profile-info-container {
+  border: solid;
+  width: 30%;
+  margin-top: 10%;
+}
+
+
+/* Album Page */
+
+.album-container{
+  border: solid;
+  border-color: green;
+  
+  width: 100%;
+}

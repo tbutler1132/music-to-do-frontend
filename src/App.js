@@ -1,25 +1,42 @@
-import logo from './logo.svg';
 import './App.css';
 
-function App() {
+import {useEffect} from 'react'
+import {Route, Switch} from 'react-router-dom'
+
+import Profile from './components/Profile'
+
+import {users} from './api/dummyApi'
+import { connect } from 'react-redux';
+// import {setCurrentUser} from './redux/actions'
+
+
+function App(props) {
+
+
+  useEffect(() => {
+    const userObj = users.find(user => user.id === "1")
+    props.setCurrentUser(userObj)
+  }, [])
+
+  console.log(props.currentUser)
+  
+
   return (
+    props.currentUser ?
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Route path="/profile" render={() => <Profile />}/>
     </div>
+    :
+    null
   );
 }
 
-export default App;
+const msp = (state) => {
+  return {currentUser: state.currentUser}
+}
+
+const mdp = (dispatch) => {
+  return {setCurrentUser: (userObj) => dispatch({type: "set_current_user", payload: userObj})}
+}
+
+export default connect(msp,mdp)(App);
