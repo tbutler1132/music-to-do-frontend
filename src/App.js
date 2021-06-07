@@ -1,9 +1,9 @@
 import './App.css';
 
 import {useEffect} from 'react'
-import {Route, Switch} from 'react-router-dom'
+// import {Route, Switch} from 'react-router-dom'
 
-import Profile from './components/Profile'
+// import Profile from './components/Profile'
 import TaskList from './components/TaskList/TaskList'
 
 import {users} from './api/dummyApi'
@@ -19,13 +19,11 @@ function App(props) {
     props.setCurrentUser(userObj)
   }, [])
 
-  console.log(props.currentUser)
-  
 
   return (
     props.currentUser ?
     <div className="App">
-      <TaskList />
+      <TaskList currentUser={props.currentUser}/>
       {/* <Route path="/profile" render={() => <Profile />}/> */}
     </div>
     :

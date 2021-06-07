@@ -5,7 +5,6 @@ const defaultState = {
 }
 
 function currentUserReducer(currentState = defaultState.currentUser, action){
-    console.log(action)
     switch(action.type){
 
         case "set_current_user":

@@ -1,5 +1,8 @@
 .App {
   text-align: center;
+  border: solid;
+  display: flex;
+  justify-content: center;
 }
 
 .App-logo {
@@ -36,6 +39,23 @@
     transform: rotate(360deg);
   }
 }
+
+
+
+
+
+/* TASK LIST */
+
+.task-list {
+  border: solid;
+  width: 50%;
+}
+
+
+
+
+
+
 
 
 /* Profile Page */
