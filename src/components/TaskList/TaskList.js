@@ -4,6 +4,8 @@ import {user} from '../../api/dummyApi'
 import {task} from '../../api/dummyApi'
 import {song} from '../../api/dummyApi'
 
+import {AiFillCheckCircle} from 'react-icons/ai'
+
 function TaskForm(props) {
     const {addTask, song} = props
 
@@ -39,11 +41,10 @@ function TaskForm(props) {
     }
 
     return (
-        <div>
+        <div className="task-form">
             <form onSubmit={submitHandler}>
-                <label>Description</label>
                 <input onChange={contentHandler} value={content} label="content"/>
-                <button type="submit">Add</button>
+                {/* <button type="submit">Add</button> */}
             </form>
         </div>
     );
@@ -67,21 +68,27 @@ function TaskList(props) {
 
     //Render tasks from API
     const renderGeneralTasks = () => {
-        return generalTasks.map(task => <><li>{task.content}</li><p onClick={() => removeGeneralTask(task)}>-</p></>)
+        return generalTasks.map(task => 
+        <div className="task-item">
+            <AiFillCheckCircle onClick={() => removeGeneralTask(task)}/>
+            <li>{task.content}</li>
+        </div>)
     }
 
     //Render songs from API
     const renderSongs = () => {
         return songs.map(song =>
-        <div key={song.id}> 
-        <h2>{song.title}</h2>
-        <p onClick={() => removeSong(song)}>x</p>
+        <div key={song.id}>
+            <div className="song-title-item">
+                <AiFillCheckCircle onClick={() => removeSong(song)}/>
+                <h2>{song.title}</h2>
+            </div> 
         <ul>
             {song.tasks.map(task => 
-            <>
+            <div className="task-item">
+                <AiFillCheckCircle onClick={() => removeSongTask(song, task)}/>
                 <li>{task.content}</li>
-                <p onClick={() => removeSongTask(song, task)}>-</p>
-            </>
+            </div>
             )}
         </ul>
             {songTaskFormOpen ? 
@@ -145,15 +152,19 @@ function TaskList(props) {
     return (
         <div className="task-list">
             <h1>{user.albumTitle}</h1>
-            <h2>general</h2>
-            <ul>
-                {renderGeneralTasks()}
-            </ul>
-            {generalTaskFormOpen ? 
-                <TaskForm song={false} addTask={addGeneralTask}/>
-            :
-                null
-            }
+            <div className="tasks-subject-container">
+                <div className="song-title-item">
+                    <h2>General</h2>
+                </div>
+                <ul>
+                    {renderGeneralTasks()}
+                </ul>
+                {generalTaskFormOpen ? 
+                    <TaskForm song={false} addTask={addGeneralTask}/>
+                :
+                    null
+                }
+            </div>
             {renderSongs()}
             <button onClick={() => openAddSongForm(true)}>Add song</button>
             {addSongFormOpen ?
