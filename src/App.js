@@ -6,7 +6,7 @@ import {useEffect} from 'react'
 // import Profile from './components/Profile'
 import TaskList from './components/TaskList/TaskList'
 
-import {users} from './api/dummyApi'
+import {user} from './api/dummyApi'
 import { connect } from 'react-redux';
 // import {setCurrentUser} from './redux/actions'
 
@@ -15,8 +15,9 @@ function App(props) {
 
 
   useEffect(() => {
-    const userObj = users.find(user => user.id === "1")
-    props.setCurrentUser(userObj)
+    fetch('http://localhost:7000/users')
+    .then(r => r.json())
+    .then(data => console.log(data))
   }, [])
 
 

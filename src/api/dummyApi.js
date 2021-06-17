@@ -87,5 +87,25 @@ export const song = [
 export const user = {
     username: "Tim",
     password: "1234",
-    albumTitle: "Project Z"
+    albumTitle: "Project Z",
+    tasks: [     
+        {
+            id: 1,
+            content: "Make art",
+            general: true,
+        }
+    ],
+    songs: [
+        {
+            id: 1,
+            title: "Color",
+            tasks: [    
+                {
+                    id: 2,
+                    content: "Mix beat",
+                    general: false,
+                }
+            ]
+        }
+    ]
 }

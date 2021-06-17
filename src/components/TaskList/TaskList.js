@@ -1,7 +1,6 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {user} from '../../api/dummyApi'
-import {task} from '../../api/dummyApi'
 import {song} from '../../api/dummyApi'
 
 import {AiFillCheckCircle} from 'react-icons/ai'
@@ -56,8 +55,17 @@ function TaskList(props) {
     const [generalTaskFormOpen, openGeneralTaskForm] = useState(true)
     const [songTaskFormOpen, openSongTaskForm] = useState(true)
     const [addSongFormOpen, openAddSongForm] = useState(false)
-    const [generalTasks, setGeneralTasks] = useState(task)
+    const [generalTasks, setGeneralTasks] = useState(false)
     const [songs, setSongs] = useState(song)
+
+    useEffect(() => {
+        fetch('http://localhost:7000/users')
+        .then(r => r.json())
+        .then(data => {
+            console.log(data)
+            setGeneralTasks(data.Tasks)
+        })
+    }, [])
 
     const [songTitle, setSongTitle] = useState("")
 
@@ -68,7 +76,7 @@ function TaskList(props) {
 
     //Render tasks from API
     const renderGeneralTasks = () => {
-        return generalTasks.map(task => 
+        return props.currentUser.tasks.map(task => 
         <div className="task-item">
             <AiFillCheckCircle onClick={() => removeGeneralTask(task)}/>
             <li>{task.content}</li>
