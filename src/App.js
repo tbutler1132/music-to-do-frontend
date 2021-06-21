@@ -19,7 +19,6 @@ function App(props) {
     fetch('http://localhost:7000/users')
     .then(r => r.json())
     .then(data => {
-      console.log(data) 
       setGeneralTasks(data[0].tasks)
       setSongs(data[0].songs)
       props.setCurrentUser(data[0])

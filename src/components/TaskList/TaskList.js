@@ -25,19 +25,14 @@ function TaskForm(props) {
         e.preventDefault()
         console.log("garrahh, Im hit!!")
 
-
-        
-
-
         if (!song){
         addTask({
-            id: 5,
+            _id: 0,
             content: content,
             general: true
         })}else if(song){
             console.log("You son of a")
             addTask({
-                id: 10,
                 content: content,
                 general: false
             }, song)
@@ -58,10 +53,8 @@ function TaskForm(props) {
 function TaskList(props) {
 
     
-    const {generalTasks, setGeneralTasks, songs, setSongs} = props
+    const {generalTasks, setGeneralTasks, songs, setSongs, currentUser} = props
     
-    console.log(generalTasks)
-
     //Task list state
     const [generalTaskFormOpen, openGeneralTaskForm] = useState(true)
     const [songTaskFormOpen, openSongTaskForm] = useState(true)
@@ -78,8 +71,9 @@ function TaskList(props) {
 
     //Render tasks from API
     const renderGeneralTasks = () => {
-        return generalTasks.map(task => 
-        <div className="task-item" key={task._id}>
+        const filteredTasks = generalTasks.filter(task => task !== null)
+        return filteredTasks.map(task => 
+        <div className="task-item" key={task.content}>
             <AiFillCheckCircle onClick={() => removeGeneralTask(task)}/>
             <li>{task.content}</li>
         </div>)
@@ -88,19 +82,19 @@ function TaskList(props) {
     //Render songs from API
     const renderSongs = () => {
         return songs.map(song =>
-        <div key={song.id}>
+        <div key={song.title}>
             <div className="song-title-item">
                 <AiFillCheckCircle onClick={() => removeSong(song)}/>
                 <h2>{song.title}</h2>
             </div> 
-        <ul>
-            {song.tasks.map(task => 
-            <div className="task-item" key={task.id}>
-                <AiFillCheckCircle onClick={() => removeSongTask(song, task)}/>
-                <li>{task.content}</li>
-            </div>
-            )}
-        </ul>
+            <ul>
+                {song.tasks.map(task => 
+                <div className="task-item" key={task.content}>
+                    <AiFillCheckCircle onClick={() => removeSongTask(song, task)}/>
+                    <li>{task.content}</li>
+                </div>
+                )}
+            </ul>
             {songTaskFormOpen ? 
                 <TaskForm song={song} addTask={addSongTask}/>
             :
@@ -112,13 +106,34 @@ function TaskList(props) {
 
     //Add a general task
     const addGeneralTask = (taskObj) => {
-        console.log(taskObj)
+        const options = {
+            method: "PATCH",
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(taskObj)
+        }
+        fetch(`http://localhost:7000/users/add_gen_task/${currentUser._id}`, options)
+        .then(r => r.json())
+        .then(data => console.log(data))
+
         setGeneralTasks([...generalTasks, taskObj])
     }
 
     //Remove a general task
     const removeGeneralTask = (taskObj) => {
-        setGeneralTasks(generalTasks.filter(task => task.content !== taskObj.content))
+        fetch(`http://localhost:7000/users/delete_gen_task/${currentUser._id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(taskObj)
+        })
+        .then(r => r.json())
+        .then(data => console.log(data))
+        setGeneralTasks(generalTasks.filter(task => task !== null && task.content !== taskObj.content))
     }
 
     //Add a song task
@@ -133,7 +148,7 @@ function TaskList(props) {
     //Remove a song task 
     const removeSongTask = (songObj, taskObj) => {
         const filteredSongs = songs.filter(song => song.title !== songObj.title)
-        const filteredTasks = songObj.tasks.filter(task => task.content != taskObj.content)
+        const filteredTasks = songObj.tasks.filter(task => task.content !== taskObj.content)
         songObj.tasks = filteredTasks
         filteredSongs.push(songObj)
         setSongs(filteredSongs)
@@ -143,17 +158,39 @@ function TaskList(props) {
     const songSubmitHandler = (e) => {
         e.preventDefault()
         const newSong = {
-            id: songs.length + 1,
             title: songTitle,
             tasks: []
         }
-        setSongs([...songs, newSong])
+        const options = {
+            method: "PATCH",
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(newSong)
+        }
+        fetch(`http://localhost:7000/users/add_song/${currentUser._id}`, options)
+        .then(r => r.json())
+        .then(data => {
+            console.log(data)
+            setSongs([...songs, data])
+        })
         openAddSongForm(false)
         setSongTitle("")
     }
 
     //Remove a song
     const removeSong = (songObj) => {
+        fetch(`http://localhost:7000/users/delete_song/${currentUser._id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(songObj)
+        })
+        .then(r => r.json())
+        .then(data => console.log(data))
         setSongs(songs.filter(song => song.title !== songObj.title))
     }
 
