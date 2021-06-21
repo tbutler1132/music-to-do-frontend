@@ -6,6 +6,7 @@ import {Route, Switch, withRouter} from 'react-router-dom'
 // import Profile from './components/Profile'
 import TaskList from './components/TaskList/TaskList'
 import Login from './components/Login'
+import Signin from './components/Signin'
 import LogoutButton from './components/LogoutButton'
 import { connect } from 'react-redux';
 // import {setCurrentUser} from './redux/actions'
@@ -64,6 +65,25 @@ function App(props) {
     })
   }
 
+  const signupHandler = (userInfo) => {
+    fetch(`${BASE_API}/users/signup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      },
+      body: JSON.stringify(userInfo)
+    })
+    .then(r => r.json())
+    .then(data => {
+      console.log(data)
+      localStorage.setItem("token", data.token)
+      localStorage.setItem("profile", JSON.stringify({...data.result}))
+      setCurrentUser(data.result)
+      props.history.push('/tasklist')
+    })
+  }
+
   const logoutHandler = () => {
     console.log('clicked')
     localStorage.removeItem('profile')
@@ -74,7 +94,8 @@ function App(props) {
   return (
     <div className="App">
       <Switch>
-        <Route path="/login" render={() => <Login loginHandler={loginHandler}/>} />
+        <Route path="/login" render={() => <Login history={props.history} loginHandler={loginHandler}/>} />
+        <Route path="/signin" render={() => <Signin signupHandler={signupHandler}/>} />
         {currentUser ?
         <>
         <Route path="/tasklist" render={() => <TaskList songs={songs} setSongs={setSongs} generalTasks={generalTasks} setGeneralTasks={setGeneralTasks} currentUser={currentUser}/>} />

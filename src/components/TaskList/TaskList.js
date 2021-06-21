@@ -71,12 +71,16 @@ function TaskList(props) {
 
     //Render tasks from API
     const renderGeneralTasks = () => {
-        const filteredTasks = generalTasks.filter(task => task !== null)
-        return filteredTasks.map(task => 
-        <div className="task-item" key={task.content}>
-            <AiFillCheckCircle onClick={() => removeGeneralTask(task)}/>
-            <li>{task.content}</li>
-        </div>)
+        if(generalTasks.length > 0){
+            const filteredTasks = generalTasks.filter(task => task !== null)
+            return filteredTasks.map(task => 
+            <div className="task-item" key={task.content}>
+                <AiFillCheckCircle onClick={() => removeGeneralTask(task)}/>
+                <li>{task.content}</li>
+            </div>)
+        } else {
+            return null
+        }
     }
 
     //Render songs from API

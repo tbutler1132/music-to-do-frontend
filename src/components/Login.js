@@ -29,6 +29,7 @@ function Login(props) {
                 <input value={password} onChange={passwordHandler}/>
                 <button type="submit">Submit</button>
             </form>
+            <h3 onClick={() => props.history.push('/signin')}>Don't have an account? Click here to sign on up!</h3>
         </div>
     );
 }
