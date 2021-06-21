@@ -138,20 +138,44 @@ function TaskList(props) {
 
     //Add a song task
     const addSongTask = (taskObj, song) => {
-        console.log("ahh, I'm hit!! I'm hit!")
-        const foundSong = songs.find(el => el.id === song.id)
-        console.log(foundSong)
-        foundSong.tasks.push(taskObj)
-        setSongs([...songs])
+        const options = {
+            method: "PATCH",
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({task: taskObj, song: song})
+        }
+        fetch(`http://localhost:7000/users/add_song_task/${currentUser._id}`, options)
+        .then(r => r.json())
+        .then(data => {
+            console.log(data)
+            song.tasks.push(data)
+            setSongs([...songs])
+        })
     }
 
     //Remove a song task 
     const removeSongTask = (songObj, taskObj) => {
-        const filteredSongs = songs.filter(song => song.title !== songObj.title)
-        const filteredTasks = songObj.tasks.filter(task => task.content !== taskObj.content)
-        songObj.tasks = filteredTasks
-        filteredSongs.push(songObj)
-        setSongs(filteredSongs)
+        fetch(`http://localhost:7000/users/delete_song_task/${currentUser._id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({song: songObj, task: taskObj})
+        })
+        .then(r => r.json())
+        .then(data => {
+
+            console.log(data)
+            const filteredSongs = songs.filter(song => song.title !== songObj.title)
+            const filteredTasks = songObj.tasks.filter(task => task.content !== taskObj.content)
+            songObj.tasks = filteredTasks
+            filteredSongs.push(songObj)
+            setSongs(filteredSongs)
+        })
+
     }
 
     //Add a song
