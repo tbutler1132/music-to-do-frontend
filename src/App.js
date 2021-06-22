@@ -25,11 +25,15 @@ function App(props) {
 
   useEffect(() => {
     const profile = localStorage.getItem("profile")
+    const token = localStorage.getItem("token")
 
     if(profile) {
       const profileObj = JSON.parse(profile)
       console.log(profileObj)
-      fetch(`http://localhost:7000/users/${profileObj._id}`)
+      fetch(`http://localhost:7000/users/${profileObj._id}`, {
+        method: 'GET',
+        headers: { Authorization: `Bearer ${token}` }
+      })
       .then(r => r.json())
       .then(data => {
         setGeneralTasks(data.tasks)
