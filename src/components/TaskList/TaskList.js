@@ -1,10 +1,7 @@
 import React, {useEffect, useState} from 'react';
 
-import {user} from '../../api/dummyApi'
-import {task} from '../../api/dummyApi'
-import {song} from '../../api/dummyApi'
-
 import {AiFillCheckCircle} from 'react-icons/ai'
+import LogoutButton from '../LogoutButton'
 
 function TaskForm(props) {
     const {addTask, song} = props
@@ -27,7 +24,6 @@ function TaskForm(props) {
 
         if (!song){
         addTask({
-            _id: 0,
             content: content,
             general: true
         })}else if(song){
@@ -53,7 +49,7 @@ function TaskForm(props) {
 function TaskList(props) {
 
     
-    const {generalTasks, setGeneralTasks, songs, setSongs, currentUser} = props
+    const {generalTasks, setGeneralTasks, songs, setSongs, currentUser, logoutHandler} = props
     
     //Task list state
     const [generalTaskFormOpen, openGeneralTaskForm] = useState(true)
@@ -85,7 +81,7 @@ function TaskList(props) {
 
     //Render songs from API
     const renderSongs = () => {
-        return songs.map(song =>
+        return songs?.map(song =>
         <div key={song.title}>
             <div className="song-title-item">
                 <AiFillCheckCircle onClick={() => removeSong(song)}/>
@@ -120,9 +116,11 @@ function TaskList(props) {
         }
         fetch(`http://localhost:7000/users/add_gen_task/${currentUser._id}`, options)
         .then(r => r.json())
-        .then(data => console.log(data))
+        .then(data => {
+            console.log(data)
+            setGeneralTasks([...generalTasks, data])
+        })
 
-        setGeneralTasks([...generalTasks, taskObj])
     }
 
     //Remove a general task
@@ -226,7 +224,7 @@ function TaskList(props) {
 
     return (
         <div className="task-list">
-            <h1>{user.albumTitle}</h1>
+            <h1>{currentUser.albumTitle}</h1>
             <div className="tasks-subject-container">
                 <div className="song-title-item">
                     <h2>General</h2>
@@ -241,7 +239,9 @@ function TaskList(props) {
                 }
             </div>
             {renderSongs()}
-            <button onClick={() => openAddSongForm(true)}>Add song</button>
+            <div className="add-song-button">
+                <button className="song-button" variant="outline-dark" onClick={() => openAddSongForm(true)}>Add song</button>
+            </div>
             {addSongFormOpen ?
             <form onSubmit={songSubmitHandler}>
                 <label>Title</label>
@@ -250,6 +250,9 @@ function TaskList(props) {
             :
             null
             }
+            <div className="logout-button">
+                <LogoutButton  logoutHandler={logoutHandler}/>
+            </div>
         </div>
     );
 }

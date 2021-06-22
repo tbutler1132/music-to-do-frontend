@@ -18,13 +18,50 @@ function Signin(props) {
     }
 
     return (
-        <div className="signup-form">
-            <form onSubmit={submitHandler}>
-                <label>Username</label>
-                <input type="text" placeholder="username" value={username} onChange={usernameHandler}/>
-                <label>Password</label>
-                <input type="text" placeholder="password" value={password} onChange={passwordHandler}/>
-                <input type="submit" value="Submit"></input>
+        <div >
+            <form autocomplete='off' class='form' onSubmit={submitHandler}>
+                <div >
+                    <div class='control block-cube block-input'>
+                        <input placeholder='Username' value={username} onChange={usernameHandler} type='text'/>
+                            <div class='bg-top'>
+                                <div class='bg-inner'></div>
+                            </div>
+                            <div class='bg-right'>
+                                <div class='bg-inner'></div>
+                            </div>
+                            <div class='bg'>
+                                <div class='bg-inner'></div>
+                            </div>
+                    </div>
+                    <div class='control block-cube block-input'>
+                        <label>Password please</label>
+                        <input value={password} onChange={passwordHandler}  placeholder='Password' type='password'/>
+                            <div class='bg-top'>
+                                <div class='bg-inner'></div>
+                            </div>
+                            <div class='bg-right'>
+                                <div class='bg-inner'></div>
+                            </div>
+                            <div class='bg'>
+                                <div class='bg-inner'></div>
+                            </div>
+                        </div>
+                        {/* <button type="submit">Submit</button> */}
+                    <button class='btn block-cube block-cube-hover' type='submit'>
+                    <div class='bg-top'>
+                        <div class='bg-inner'></div>
+                    </div>
+                    <div class='bg-right'>
+                        <div class='bg-inner'></div>
+                    </div>
+                    <div class='bg'>
+                    <div class='bg-inner'></div>
+                    </div>
+                    <div class='text'>
+                    Sign Up
+                    </div>
+                    </button>
+                </div>
             </form>
         </div>
     );
