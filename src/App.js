@@ -31,7 +31,11 @@ function App(props) {
       console.log(profileObj)
       fetch(`${BASE_API}/${profileObj._id}`, {
         method: 'GET',
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { 
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          Accept: 'application/json'
+        }
       })
       .then(r => r.json())
       .then(data => {
