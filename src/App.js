@@ -8,8 +8,7 @@ import {Route, Switch, withRouter, Redirect} from 'react-router-dom'
 import TaskList from './components/TaskList/TaskList'
 import Login from './components/Login'
 import Signin from './components/Signin'
-import LogoutButton from './components/LogoutButton'
-import { connect } from 'react-redux';
+
 // import {setCurrentUser} from './redux/actions'
 
 const BASE_API = 'http://localhost:7000'
@@ -30,7 +29,7 @@ function App(props) {
     if(profile) {
       const profileObj = JSON.parse(profile)
       console.log(profileObj)
-      fetch(`http://localhost:7000/users/${profileObj._id}`, {
+      fetch(`${BASE_API}/${profileObj._id}`, {
         method: 'GET',
         headers: { Authorization: `Bearer ${token}` }
       })
@@ -111,6 +110,7 @@ function App(props) {
   return (
     <div className="App">
       <Switch>
+        <Route exact path="/"><Redirect to="login"/></Route>
         <Route path="/login" render={() => <Login history={props.history} loginHandler={loginHandler}/>} />
         <Route path="/signin" render={() => <Signin signupHandler={signupHandler}/>} />
         {currentUser ?

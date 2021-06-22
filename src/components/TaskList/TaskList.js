@@ -1,7 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 
 import {AiFillCheckCircle} from 'react-icons/ai'
 import LogoutButton from '../LogoutButton'
+
+const BASE_API = 'http://localhost:7000'
 
 function TaskForm(props) {
     const {addTask, song} = props
@@ -114,7 +116,7 @@ function TaskList(props) {
             },
             body: JSON.stringify(taskObj)
         }
-        fetch(`http://localhost:7000/users/add_gen_task/${currentUser._id}`, options)
+        fetch(`${BASE_API}/users/add_gen_task/${currentUser._id}`, options)
         .then(r => r.json())
         .then(data => {
             console.log(data)
@@ -125,7 +127,7 @@ function TaskList(props) {
 
     //Remove a general task
     const removeGeneralTask = (taskObj) => {
-        fetch(`http://localhost:7000/users/delete_gen_task/${currentUser._id}`, {
+        fetch(`${BASE_API}/users/delete_gen_task/${currentUser._id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -148,7 +150,7 @@ function TaskList(props) {
             },
             body: JSON.stringify({task: taskObj, song: song})
         }
-        fetch(`http://localhost:7000/users/add_song_task/${currentUser._id}`, options)
+        fetch(`${BASE_API}/users/add_song_task/${currentUser._id}`, options)
         .then(r => r.json())
         .then(data => {
             console.log(data)
@@ -159,7 +161,7 @@ function TaskList(props) {
 
     //Remove a song task 
     const removeSongTask = (songObj, taskObj) => {
-        fetch(`http://localhost:7000/users/delete_song_task/${currentUser._id}`, {
+        fetch(`${BASE_API}/users/delete_song_task/${currentUser._id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -195,7 +197,7 @@ function TaskList(props) {
             },
             body: JSON.stringify(newSong)
         }
-        fetch(`http://localhost:7000/users/add_song/${currentUser._id}`, options)
+        fetch(`${BASE_API}/users/add_song/${currentUser._id}`, options)
         .then(r => r.json())
         .then(data => {
             console.log(data)
@@ -207,7 +209,7 @@ function TaskList(props) {
 
     //Remove a song
     const removeSong = (songObj) => {
-        fetch(`http://localhost:7000/users/delete_song/${currentUser._id}`, {
+        fetch(`${BASE_API}/users/delete_song/${currentUser._id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
