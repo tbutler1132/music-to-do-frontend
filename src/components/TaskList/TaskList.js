@@ -2,8 +2,9 @@ import React, {useState} from 'react';
 
 import {AiFillCheckCircle} from 'react-icons/ai'
 import LogoutButton from '../LogoutButton'
+import axios from 'axios';
 
-const BASE_API = 'http://localhost:7000/proxy'
+const BASE_API = 'http://localhost:7000'
 
 function TaskForm(props) {
     const {addTask, song} = props
@@ -104,76 +105,137 @@ function TaskList(props) {
     //Add a general task
     const addGeneralTask = (taskObj) => {
         const options = {
+            url: `${BASE_API}/users/add_gen_task/${currentUser._id}`,
             method: "PATCH",
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
-            body: JSON.stringify(taskObj)
+            data: taskObj
         }
-        fetch(`${BASE_API}/users/add_gen_task/${currentUser._id}`, options)
-        .then(r => r.json())
+
+        axios(options)
         .then(data => {
             console.log(data)
-            setGeneralTasks([...generalTasks, data])
+            setGeneralTasks([...generalTasks, data.data])
         })
+
+        // fetch(`${BASE_API}/users/add_gen_task/${currentUser._id}`, options)
+        // .then(r => r.json())
+        // .then(data => {
+        //     console.log(data)
+        //     setGeneralTasks([...generalTasks, data])
+        // })
 
     }
 
     //Remove a general task
     const removeGeneralTask = (taskObj) => {
-        fetch(`${BASE_API}/users/delete_gen_task/${currentUser._id}`, {
+
+
+        axios({
+            url: `${BASE_API}/users/delete_gen_task/${currentUser._id}`,
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
-            body: JSON.stringify(taskObj)
+            data: taskObj
         })
-        .then(r => r.json())
-        .then(data => console.log(data))
-        setGeneralTasks(generalTasks.filter(task => task !== null && task.content !== taskObj.content))
+        .then(r => {
+            setGeneralTasks(generalTasks.filter(task => task !== null && task.content !== taskObj.content))
+        })
+
+        // fetch(`${BASE_API}/users/delete_gen_task/${currentUser._id}`, {
+        //     method: 'DELETE',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'Accept': 'application/json'
+        //     },
+        //     body: JSON.stringify(taskObj)
+        // })
+        // .then(r => r.json())
+        // .then(data => console.log(data))
+        // setGeneralTasks(generalTasks.filter(task => task !== null && task.content !== taskObj.content))
     }
 
     //Add a song task
     const addSongTask = (taskObj, song) => {
-        const options = {
+
+
+        axios({
+            url: `${BASE_API}/users/add_song_task/${currentUser._id}`,
             method: "PATCH",
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
-            body: JSON.stringify({task: taskObj, song: song})
-        }
-        fetch(`${BASE_API}/users/add_song_task/${currentUser._id}`, options)
-        .then(r => r.json())
-        .then(data => {
-            console.log(data)
-            song.tasks.push(data)
+            data: {task: taskObj, song: song}
+        })
+        .then(r => {
+            console.log(r.data)
+            song.tasks.push(r.data)
             setSongs([...songs])
         })
+
+        // const options = {
+        //     method: "PATCH",
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'Accept': 'application/json'
+        //     },
+        //     body: JSON.stringify({task: taskObj, song: song})
+        // }
+        // fetch(`${BASE_API}/users/add_song_task/${currentUser._id}`, options)
+        // .then(r => r.json())
+        // .then(data => {
+        //     console.log(data)
+        //     song.tasks.push(data)
+        //     setSongs([...songs])
+        // })
     }
 
     //Remove a song task 
     const removeSongTask = (songObj, taskObj) => {
-        fetch(`${BASE_API}/users/delete_song_task/${currentUser._id}`, {
+
+
+        axios({
+            url: `${BASE_API}/users/delete_song_task/${currentUser._id}`,
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
-            body: JSON.stringify({song: songObj, task: taskObj})
+            data: {song: songObj, task: taskObj}
         })
-        .then(r => r.json())
-        .then(data => {
-
-            console.log(data)
+        .then(r => {
+            console.log(r)
             const filteredSongs = songs.filter(song => song.title !== songObj.title)
             const filteredTasks = songObj.tasks.filter(task => task.content !== taskObj.content)
             songObj.tasks = filteredTasks
             filteredSongs.push(songObj)
             setSongs(filteredSongs)
         })
+
+
+        // fetch(`${BASE_API}/users/delete_song_task/${currentUser._id}`, {
+        //     method: 'DELETE',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'Accept': 'application/json'
+        //     },
+        //     body: JSON.stringify({song: songObj, task: taskObj})
+        // })
+        // .then(r => r.json())
+        // .then(data => {
+
+        //     console.log(data)
+        //     const filteredSongs = songs.filter(song => song.title !== songObj.title)
+        //     const filteredTasks = songObj.tasks.filter(task => task.content !== taskObj.content)
+        //     songObj.tasks = filteredTasks
+        //     filteredSongs.push(songObj)
+        //     setSongs(filteredSongs)
+        // })
 
     }
 
@@ -184,37 +246,74 @@ function TaskList(props) {
             title: songTitle,
             tasks: []
         }
-        const options = {
+
+        axios({
+            url: `${BASE_API}/users/add_song/${currentUser._id}`,
             method: "PATCH",
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
-            body: JSON.stringify(newSong)
-        }
-        fetch(`${BASE_API}/users/add_song/${currentUser._id}`, options)
-        .then(r => r.json())
-        .then(data => {
-            console.log(data)
-            setSongs([...songs, data])
+            data: newSong
         })
+        .then(r => {
+            console.log(r)
+            setSongs([...songs, r.data])
+        })
+
         openAddSongForm(false)
         setSongTitle("")
+
+
+
+        // const options = {
+        //     method: "PATCH",
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'Accept': 'application/json'
+        //     },
+        //     body: JSON.stringify(newSong)
+        // }
+        // fetch(`${BASE_API}/users/add_song/${currentUser._id}`, options)
+        // .then(r => r.json())
+        // .then(data => {
+        //     console.log(data)
+        //     setSongs([...songs, data])
+        // })
+        // openAddSongForm(false)
+        // setSongTitle("")
     }
 
     //Remove a song
     const removeSong = (songObj) => {
-        fetch(`${BASE_API}/users/delete_song/${currentUser._id}`, {
+
+
+        axios({
+            url: `${BASE_API}/users/delete_song/${currentUser._id}`,
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
-            body: JSON.stringify(songObj)
+            data: songObj
         })
-        .then(r => r.json())
-        .then(data => console.log(data))
+        .then(r => {
+            console.log(r)
+        })
         setSongs(songs.filter(song => song.title !== songObj.title))
+
+
+        // fetch(`${BASE_API}/users/delete_song/${currentUser._id}`, {
+        //     method: 'DELETE',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'Accept': 'application/json'
+        //     },
+        //     body: JSON.stringify(songObj)
+        // })
+        // .then(r => r.json())
+        // .then(data => console.log(data))
+        // setSongs(songs.filter(song => song.title !== songObj.title))
     }
 
 

@@ -3,6 +3,7 @@ import './App.css';
 
 import {useEffect, useState} from 'react'
 import {Route, Switch, withRouter, Redirect} from 'react-router-dom'
+import axios from 'axios'
 
 // import Profile from './components/Profile'
 import TaskList from './components/TaskList/TaskList'
@@ -11,7 +12,7 @@ import Signin from './components/Signin'
 
 // import {setCurrentUser} from './redux/actions'
 
-const BASE_API = 'http://localhost:7000/proxy'
+const BASE_API = 'http://localhost:7000'
 
 
 function App(props) {
@@ -25,22 +26,42 @@ function App(props) {
     const token = localStorage.getItem("token")
 
     if(profile) {
+
       const profileObj = JSON.parse(profile)
-      fetch(`${BASE_API}/users/${profileObj._id}`, {
+
+      axios({
         method: 'GET',
-        headers: { 
-          Authorization: `Bearer ${token}`,
+        url: `${BASE_API}/users/${profileObj._id}`,
+        headers: {
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
-          Accept: 'application/json'
+          'Accept': 'application/json'
         }
       })
-      .then(r => r.json())
-      .then(data => {
-        setGeneralTasks(data.tasks)
-        setSongs(data.songs)
-        setCurrentUser(data)
-      }
-      )
+      .then(data => 
+        {
+            setGeneralTasks(data.data.tasks)
+            setSongs(data.data.songs)
+            setCurrentUser(data.data)
+          }
+        )
+
+
+      // fetch(`${BASE_API}/users/${profileObj._id}`, {
+      //   method: 'GET',
+      //   headers: { 
+      //     Authorization: `Bearer ${token}`,
+      //     'Content-Type': 'application/json',
+      //     Accept: 'application/json'
+      //   }
+      // })
+      // .then(r => r.json())
+      // .then(data => {
+      //   setGeneralTasks(data.tasks)
+      //   setSongs(data.songs)
+      //   setCurrentUser(data)
+      // }
+      // )
       
     }
   }, [])
@@ -60,44 +81,86 @@ function App(props) {
   // console.log(localStorage.getItem(JSON.parseZ))
 
   const loginHandler = (userInfo) => {
-    fetch(`${BASE_API}/users/signin`, {
+
+
+    axios({
+      url: `${BASE_API}/users/signin`,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Accept: 'application/json'
+        'Accept': 'application/json'
       },
-      body: JSON.stringify(userInfo)
+      data: userInfo
     })
-    .then(r => r.json())
     .then(data => {
-      console.log(data)
-      localStorage.setItem("token", data.token)
-      localStorage.setItem("profile", JSON.stringify({...data.result}))
-      setGeneralTasks(data.result.tasks)
-      setSongs(data.result.songs)
-      setCurrentUser(data.result)
-      props.history.push('/tasklist')
-    })
+        console.log(data)
+        localStorage.setItem("token", data.data.token)
+        localStorage.setItem("profile", JSON.stringify({...data.data.result}))
+        setGeneralTasks(data.data.result.tasks)
+        setSongs(data.data.result.songs)
+        setCurrentUser(data.data.result)
+        props.history.push('/tasklist')
+      })
+
+
+    // fetch(`${BASE_API}/users/signin`, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     Accept: 'application/json'
+    //   },
+    //   body: JSON.stringify(userInfo)
+    // })
+    // .then(r => r.json())
+    // .then(data => {
+    //   console.log(data)
+    //   localStorage.setItem("token", data.token)
+    //   localStorage.setItem("profile", JSON.stringify({...data.result}))
+    //   setGeneralTasks(data.result.tasks)
+    //   setSongs(data.result.songs)
+    //   setCurrentUser(data.result)
+    //   props.history.push('/tasklist')
+    // })
   }
 
   const signupHandler = (userInfo) => {
-    fetch(`${BASE_API}/users/signup`, {
+
+
+    axios({
       method: 'POST',
+      url: `${BASE_API}/users/signup`,
       headers: {
         'Content-Type': 'application/json',
-        Accept: 'application/json'
+        'Accept': 'application/json'
       },
-      body: JSON.stringify(userInfo)
+      data: userInfo
     })
-    .then(r => r.json())
     .then(data => {
-      localStorage.setItem("token", data.token)
-      localStorage.setItem("profile", JSON.stringify({...data.result}))
-      setGeneralTasks(data.result.tasks)
-      setSongs(data.result.songs)
-      setCurrentUser(data.result)
-      props.history.push('/tasklist')
-    })
+        localStorage.setItem("token", data.token)
+        localStorage.setItem("profile", JSON.stringify({...data.result}))
+        setGeneralTasks(data.result.tasks)
+        setSongs(data.result.songs)
+        setCurrentUser(data.result)
+        props.history.push('/tasklist')
+      })
+
+    // fetch(`${BASE_API}/users/signup`, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     Accept: 'application/json'
+    //   },
+    //   body: JSON.stringify(userInfo)
+    // })
+    // .then(r => r.json())
+    // .then(data => {
+    //   localStorage.setItem("token", data.token)
+    //   localStorage.setItem("profile", JSON.stringify({...data.result}))
+    //   setGeneralTasks(data.result.tasks)
+    //   setSongs(data.result.songs)
+    //   setCurrentUser(data.result)
+    //   props.history.push('/tasklist')
+    // })
   }
 
   const logoutHandler = () => {
