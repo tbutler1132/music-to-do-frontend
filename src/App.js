@@ -12,7 +12,7 @@ import Signin from './components/Signin'
 
 // import {setCurrentUser} from './redux/actions'
 
-const BASE_API = 'http://localhost:7000'
+const BASE_API = 'https://github.com/tbutler1132/music-to-do-backend'
 
 
 function App(props) {
