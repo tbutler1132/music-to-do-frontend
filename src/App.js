@@ -136,11 +136,11 @@ function App(props) {
       data: userInfo
     })
     .then(data => {
-        localStorage.setItem("token", data.token)
-        localStorage.setItem("profile", JSON.stringify({...data.result}))
-        setGeneralTasks(data.result.tasks)
-        setSongs(data.result.songs)
-        setCurrentUser(data.result)
+        localStorage.setItem("token", data.data.token)
+        localStorage.setItem("profile", JSON.stringify({...data.data.result}))
+        setGeneralTasks(data.data.result.tasks)
+        setSongs(data.data.result.songs)
+        setCurrentUser(data.data.result)
         props.history.push('/tasklist')
       })
 
