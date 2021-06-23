@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import {AiFillCheckCircle} from 'react-icons/ai'
 import LogoutButton from '../LogoutButton'
 
-const BASE_API = '/proxy'
+const BASE_API = 'https://tbutler1132-music-to-do-backend.zeet.app'
 
 function TaskForm(props) {
     const {addTask, song} = props
