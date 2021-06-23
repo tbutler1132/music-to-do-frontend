@@ -4,7 +4,7 @@ import {AiFillCheckCircle} from 'react-icons/ai'
 import LogoutButton from '../LogoutButton'
 import axios from 'axios';
 
-const BASE_API = 'https://tbutler1132-music-to-do-backend.zeet.app/'
+const BASE_API = 'https://tbutler1132-music-to-do-backend.zeet.app'
 
 function TaskForm(props) {
     const {addTask, song} = props

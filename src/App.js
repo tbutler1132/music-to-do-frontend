@@ -12,7 +12,7 @@ import Signin from './components/Signin'
 
 // import {setCurrentUser} from './redux/actions'
 
-const BASE_API = 'https://tbutler1132-music-to-do-backend.zeet.app/'
+const BASE_API = 'https://tbutler1132-music-to-do-backend.zeet.app'
 
 
 function App(props) {
