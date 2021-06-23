@@ -20,16 +20,13 @@ function App(props) {
   const [songs, setSongs] = useState(false)
   const [currentUser, setCurrentUser] = useState(false)
 
-  console.log(currentUser)
-
   useEffect(() => {
     const profile = localStorage.getItem("profile")
     const token = localStorage.getItem("token")
 
     if(profile) {
       const profileObj = JSON.parse(profile)
-      console.log(profileObj)
-      fetch(`${BASE_API}/${profileObj._id}`, {
+      fetch(`${BASE_API}/users/${profileObj._id}`, {
         method: 'GET',
         headers: { 
           Authorization: `Bearer ${token}`,
