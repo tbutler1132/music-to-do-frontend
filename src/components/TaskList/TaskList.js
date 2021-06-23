@@ -3,22 +3,13 @@ import React, {useState} from 'react';
 import {AiFillCheckCircle} from 'react-icons/ai'
 import LogoutButton from '../LogoutButton'
 
-<<<<<<< HEAD
-const BASE_API = 'https://tbutler1132-music-to-do-backend.zeet.app'
-=======
 const BASE_API = 'http://localhost:7000'
->>>>>>> dev
 
 function TaskForm(props) {
     const {addTask, song} = props
 
     //Form State
-    // const [title, setTitle] = useState('')
     const [content, setContent] = useState('')
-
-    // const titleHandler = (e) => {
-    //     setTitle(e.target.value)
-    // }
  
     const contentHandler = (e) => {
         setContent(e.target.value)
