@@ -11,7 +11,7 @@ import Signin from './components/Signin'
 
 // import {setCurrentUser} from './redux/actions'
 
-const BASE_API = '/proxy'
+const BASE_API = 'http://localhost:7000/proxy'
 
 
 function App(props) {

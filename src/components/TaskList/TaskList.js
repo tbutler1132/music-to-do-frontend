@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import {AiFillCheckCircle} from 'react-icons/ai'
 import LogoutButton from '../LogoutButton'
 
-const BASE_API = '/proxy'
+const BASE_API = 'http://localhost:7000/proxy'
 
 function TaskForm(props) {
     const {addTask, song} = props
