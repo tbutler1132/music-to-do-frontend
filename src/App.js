@@ -11,7 +11,11 @@ import Signin from './components/Signin'
 
 // import {setCurrentUser} from './redux/actions'
 
+<<<<<<< HEAD
 const BASE_API = 'https://tbutler1132-music-to-do-backend.zeet.app'
+=======
+const BASE_API = 'http://localhost:7000'
+>>>>>>> dev
 
 
 function App(props) {
@@ -20,18 +24,19 @@ function App(props) {
   const [songs, setSongs] = useState(false)
   const [currentUser, setCurrentUser] = useState(false)
 
-  console.log(currentUser)
-
   useEffect(() => {
     const profile = localStorage.getItem("profile")
     const token = localStorage.getItem("token")
 
     if(profile) {
       const profileObj = JSON.parse(profile)
-      console.log(profileObj)
-      fetch(`${BASE_API}/${profileObj._id}`, {
+      fetch(`${BASE_API}/users/${profileObj._id}`, {
         method: 'GET',
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { 
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          Accept: 'application/json'
+        }
       })
       .then(r => r.json())
       .then(data => {
